@@ -30,8 +30,8 @@ function App() {
             id: record.id,
             ...record.fields,
           };
-          if (!item.booleanProperty) {
-            item.booleanProperty = false;
+          if (!item.isCompleted) {
+            item.isCompleted = false;
           }
           return item;
         });
@@ -56,7 +56,6 @@ function App() {
         },
       ],
     };
-    console.log('payload', payload);
     const options = {
       method: 'POST',
       headers: { Authorization: token, 'Content-Type': 'application/json' },
@@ -86,18 +85,91 @@ function App() {
     }
   };
 
-  const completeTodo = (id) => {
+  const completeTodo = async (id) => {
+    const originalTodo = todoList.find((todo) => todo.id === id);
     const updatedTodos = todoList.map((todo) =>
-      todo.id === id ? { ...todo, isCompleted: true } : todo
+      todo.id === id ? { ...todo, isCompleted: !todo.isCompleted } : todo
     );
-    setTodoList(updatedTodos);
+
+    const payload = {
+      records: [
+        {
+          id,
+          fields: {
+            title: originalTodo.title,
+            isCompleted: !originalTodo.isCompleted,
+          },
+        },
+      ],
+    };
+
+    const options = {
+      method: 'PATCH',
+      headers: {
+        Authorization: token,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    };
+
+    // optimistic update
+    setTodoList([...updatedTodos]);
+
+    try {
+      const resp = await fetch(url, options);
+      if (!resp.ok) {
+        throw new Error(resp.message);
+      }
+    } catch (error) {
+      console.log('error while updating:', error.message);
+      setErrorMessage(`${error.message}. Reverting comlete todo...`);
+      const revertedTodos = todoList.map((todo) =>
+        todo.id === id ? originalTodo : todo
+      );
+      setTodoList([...revertedTodos]);
+    }
   };
 
-  const updateTodo = (updatedTodo) => {
-    const updatedTodos = todoList.map((todo) =>
+  const updateTodo = async (updatedTodo) => {
+    const originalTodo = todoList.find((todo) => todo.id === updatedTodo.id);
+    const updatedTodoList = todoList.map((todo) =>
       todo.id === updatedTodo.id ? updatedTodo : todo
     );
-    setTodoList(updatedTodos);
+
+    const payload = {
+      records: [
+        {
+          id: updatedTodo.id,
+          fields: {
+            title: updatedTodo.title,
+            isCompleted: updatedTodo.isCompleted,
+          },
+        },
+      ],
+    };
+
+    const options = {
+      method: 'PATCH',
+      headers: { Authorization: token, 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    };
+
+    // optimistic update
+    setTodoList([...updatedTodoList]);
+
+    try {
+      const resp = await fetch(url, options);
+      if (!resp.ok) {
+        throw new Error(resp.message);
+      }
+    } catch (error) {
+      console.log('error while updating:', error.message);
+      setErrorMessage(`${error.message}. Reverting todo...`);
+      const revertedTodos = todoList.map((todo) =>
+        todo.id === updateTodo.id ? originalTodo : todo
+      );
+      setTodoList([...revertedTodos]);
+    }
   };
 
   return (
@@ -110,15 +182,15 @@ function App() {
         onUpdateTodo={updateTodo}
         isLoading={isLoading}
       />
-      {errorMessage.length && (
+      {errorMessage.length ? (
         <div>
           <hr />
-          <p>{errorMessage}</p>
+          <p>Error: {errorMessage}</p>
           <button type="button" onClick={() => setErrorMessage('')}>
             Dismiss
           </button>
         </div>
-      )}
+      ) : null}
     </div>
   );
 }
