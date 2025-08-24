@@ -3,6 +3,40 @@ import TodoList from './features/TodoList/TodoList';
 import TodoForm from './features/TodoForm';
 import { useState, useEffect } from 'react';
 
+function createPayload({ id, title, isCompleted }) {
+  const record = {
+    fields: {
+      title,
+      isCompleted,
+    },
+  };
+
+  if (id !== undefined) {
+    record.id = id;
+  }
+
+  if (isCompleted === undefined) {
+    record.fields.isCompleted = false;
+  }
+
+  return {
+    records: [record],
+  };
+}
+
+function getOptions(method, token, payload) {
+  return method === 'GET'
+    ? {
+        method,
+        headers: { Authorization: token },
+      }
+    : {
+        method,
+        headers: { Authorization: token, 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      };
+}
+
 function App() {
   const [todoList, setTodoList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -15,10 +49,7 @@ function App() {
   useEffect(() => {
     const fetchTodos = async () => {
       setIsLoading(true);
-      const options = {
-        method: 'GET',
-        headers: { Authorization: token },
-      };
+      const options = getOptions('GET', token);
       try {
         const resp = await fetch(url, options);
         if (!resp.ok) {
@@ -46,22 +77,8 @@ function App() {
   }, []);
 
   const addTodo = async (newTodo) => {
-    const payload = {
-      records: [
-        {
-          fields: {
-            title: newTodo.title,
-            isCompleted: newTodo.isCompleted,
-          },
-        },
-      ],
-    };
-    const options = {
-      method: 'POST',
-      headers: { Authorization: token, 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    };
-
+    const payload = createPayload(newTodo);
+    const options = getOptions('POST', token, payload);
     try {
       setIsSaving(true);
       const resp = await fetch(url, options);
@@ -72,6 +89,7 @@ function App() {
         id: records[0].id,
         ...records[0].fields,
       };
+
       // Airtable does not return false or empty fields
       if (!records[0].fields.isCompleted) {
         savedTodo.isCompleted = false;
@@ -91,26 +109,12 @@ function App() {
       todo.id === id ? { ...todo, isCompleted: !todo.isCompleted } : todo
     );
 
-    const payload = {
-      records: [
-        {
-          id,
-          fields: {
-            title: originalTodo.title,
-            isCompleted: !originalTodo.isCompleted,
-          },
-        },
-      ],
-    };
+    const payload = createPayload({
+      ...originalTodo,
+      isCompleted: !originalTodo.isCompleted,
+    });
 
-    const options = {
-      method: 'PATCH',
-      headers: {
-        Authorization: token,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    };
+    const options = getOptions('PATCH', token, payload);
 
     // optimistic update
     setTodoList([...updatedTodos]);
@@ -136,23 +140,8 @@ function App() {
       todo.id === updatedTodo.id ? updatedTodo : todo
     );
 
-    const payload = {
-      records: [
-        {
-          id: updatedTodo.id,
-          fields: {
-            title: updatedTodo.title,
-            isCompleted: updatedTodo.isCompleted,
-          },
-        },
-      ],
-    };
-
-    const options = {
-      method: 'PATCH',
-      headers: { Authorization: token, 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    };
+    const payload = createPayload(updatedTodo);
+    const options = getOptions('PATCH', token, payload);
 
     // optimistic update
     setTodoList([...updatedTodoList]);

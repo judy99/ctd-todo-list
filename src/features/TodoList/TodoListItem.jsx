@@ -21,6 +21,10 @@ function TodoListItem({ todo, onCompleteTodo, onUpdateTodo }) {
     setIsEditing(false);
   };
 
+  const handleChange = () => {
+    onCompleteTodo(todo.id);
+  };
+
   useEffect(() => {
     setWorkingTitle(todo.title);
   }, [todo]);
@@ -34,7 +38,11 @@ function TodoListItem({ todo, onCompleteTodo, onUpdateTodo }) {
             <button type="button" onClick={handleCancel}>
               {'Cancel'}
             </button>
-            <button type="button" onClick={handleUpdate}>
+            <button
+              type="button"
+              disabled={!workingTitle.length}
+              onClick={handleUpdate}
+            >
               {'Update'}
             </button>
           </>
@@ -44,7 +52,7 @@ function TodoListItem({ todo, onCompleteTodo, onUpdateTodo }) {
               <input
                 type="checkbox"
                 checked={todo.isCompleted}
-                onChange={() => onCompleteTodo(todo.id)}
+                onChange={handleChange}
               />
               <span onClick={() => setIsEditing(true)}>{todo.title}</span>
             </label>
