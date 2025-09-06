@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+
 const TodosViewForm = ({
   sortDirection,
   setSortDirection,
@@ -6,6 +8,8 @@ const TodosViewForm = ({
   queryString,
   setQueryString,
 }) => {
+  const [localQueryString, setLocalQueryString] = useState(queryString);
+
   const handleChangeSortField = (e) => {
     setSortField(e.target.value);
   };
@@ -13,6 +17,13 @@ const TodosViewForm = ({
   const handleChangeSortDir = (e) => {
     setSortDirection(e.target.value);
   };
+
+  useEffect(() => {
+    const debounce = setTimeout(() => {
+      setQueryString(localQueryString);
+    }, 500);
+    return () => clearTimeout(debounce);
+  }, [localQueryString, setQueryString]);
 
   // prevent the page from refreshing if a user accidentally
   // hits enter while working with this form
@@ -26,10 +37,10 @@ const TodosViewForm = ({
         <label htmlFor="search">Search todos:</label>
         <input
           type="text"
-          value={queryString}
-          onChange={(e) => setQueryString(e.target.value)}
+          value={localQueryString}
+          onChange={(e) => setLocalQueryString(e.target.value)}
         />
-        <button type="button" onClick={() => setQueryString('')}>
+        <button type="button" onClick={() => setLocalQueryString('')}>
           Clear
         </button>
       </div>
