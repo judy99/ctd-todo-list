@@ -184,24 +184,25 @@ function App() {
         onUpdateTodo={updateTodo}
         isLoading={isLoading}
       />
-      <hr />
-      <TodosViewForm
-        sortDirection={sortDirection}
-        setSortDirection={setSortDirection}
-        sortField={sortField}
-        setSortField={setSortField}
-        queryString={queryString}
-        setQueryString={setQueryString}
-      />
-      {errorMessage.length ? (
-        <div>
-          <hr />
-          <p>Error: {errorMessage}</p>
-          <button type="button" onClick={() => setErrorMessage('')}>
-            Dismiss
-          </button>
-        </div>
-      ) : null}
+      <footer>
+        <TodosViewForm
+          sortDirection={sortDirection}
+          setSortDirection={setSortDirection}
+          sortField={sortField}
+          setSortField={setSortField}
+          queryString={queryString}
+          setQueryString={setQueryString}
+        />
+        {errorMessage.length ? (
+          <div>
+            <hr />
+            <p>Error: {errorMessage}</p>
+            <button type="button" onClick={() => setErrorMessage('')}>
+              Dismiss
+            </button>
+          </div>
+        ) : null}
+      </footer>
     </div>
   );
 }

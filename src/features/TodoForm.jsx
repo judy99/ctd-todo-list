@@ -25,13 +25,17 @@ const TodoForm = ({ onAddTodo, isSaving }) => {
   return (
     <form onSubmit={handleAddTodo}>
       <TextInputWithLabel
-        labelText="Todo"
         elementId="todoTitle"
         onChange={handleChange}
         ref={todoTitleInput}
         value={workingTodoTitle.title}
+        placeholder={'Add new task...'}
       />
-      <button type="submit" disabled={!workingTodoTitle.title.trim()}>
+      <button
+        type="submit"
+        className="formButton"
+        disabled={!workingTodoTitle.title.trim()}
+      >
         {isSaving ? 'Saving...' : 'Add Todo'}
       </button>
     </form>

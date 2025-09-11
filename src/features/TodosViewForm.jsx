@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import TextInputWithLabel from '../shared/TextInputWithLabel';
 
 const TodosViewForm = ({
   sortDirection,
@@ -34,13 +35,17 @@ const TodosViewForm = ({
   return (
     <form id="todoViewForm" onSubmit={preventRefresh}>
       <div>
-        <label htmlFor="search">Search todos:</label>
-        <input
-          type="text"
-          value={localQueryString}
+        <TextInputWithLabel
+          elementId={'todoSearch'}
           onChange={(e) => setLocalQueryString(e.target.value)}
+          value={localQueryString}
+          placeholder={'Search by title...'}
         />
-        <button type="button" onClick={() => setLocalQueryString('')}>
+        <button
+          type="button"
+          className="formButton"
+          onClick={() => setLocalQueryString('')}
+        >
           Clear
         </button>
       </div>

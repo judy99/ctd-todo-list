@@ -1,0 +1,8 @@
+.textInputWithLabel {
+    border: none;
+    width: 30%;
+    height: 25px;
+    padding: 5px 5px 0 5px;
+    margin: 0 10px;
+    border-bottom: 2px solid grey;
+}

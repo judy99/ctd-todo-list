@@ -1,0 +1,60 @@
+#root {
+  /* max-width: 1280px; */
+  width: 100vw;
+  height: 100vw;
+  margin: 0 auto;
+  /* text-align: center; */
+  background-color: #e7f6f4;
+  /* padding: 0 1rem; */
+  position: relative;
+}
+
+#root>div {
+    background-color: white;
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 1rem 2.5rem;
+}
+
+h1 {
+  font-family: "WorkSans Bold", system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-size: 2.2em;
+  line-height: 1.1;
+}
+
+h2,
+h3,
+h4,
+h6 {
+  font-family: "WorkSans Bold", system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+.formButton {
+    border: none;
+    border-radius: 10px;
+    padding: 5px 10px;
+    font-size: 1rem;
+    margin: 0 10px;
+}
+
+.formButton:hover {
+  cursor: pointer;
+}
+.formButton:disabled:hover {
+  cursor: not-allowed;
+}
+
+footer {
+  /* position: fixed; */
+  margin: auto;
+  left: 0;
+  width: 100%;
+  bottom: 0;
+  background-color: var(--light-blue);
+}
+
+@media screen and (max-width:650px) {
+  header {
+    grid-template-columns: 1fr 100px 100px;
+  }
+}
