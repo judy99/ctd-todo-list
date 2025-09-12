@@ -1,22 +1,35 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 #root {
-  /* max-width: 1280px; */
   width: 100vw;
-  height: 100vw;
+  height: 100vh;
   margin: 0 auto;
-  /* text-align: center; */
   background-color: #e7f6f4;
-  /* padding: 0 1rem; */
   position: relative;
+  font-family: "WorkSans Bold", system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-size: 1em;
 }
 
 #root>div {
+  height: 100%;
     background-color: white;
     max-width: 780px;
     margin: 0 auto;
-    padding: 1rem 2.5rem;
+    padding: 1rem 2.5rem 0 2.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+#root>div>h1 {
+  height: 50px;
 }
 
 h1 {
+  margin: 0;
   font-family: "WorkSans Bold", system-ui, Avenir, Helvetica, Arial, sans-serif;
   font-size: 2.2em;
   line-height: 1.1;
@@ -30,7 +43,7 @@ h6 {
 }
 
 .formButton {
-    border: none;
+    border: 1px solid #ccc;
     border-radius: 10px;
     padding: 5px 10px;
     font-size: 1rem;
@@ -44,17 +57,26 @@ h6 {
   cursor: not-allowed;
 }
 
+.oneLineForm {
+  display: flex;
+  justify-content: space-between;
+}
+
+.oneLineForm > div {
+  flex-grow: 1;
+}
+
+main {
+  flex-grow: 1;
+}
+
 footer {
-  /* position: fixed; */
   margin: auto;
   left: 0;
   width: 100%;
   bottom: 0;
-  background-color: var(--light-blue);
+  height: 60px;
 }
-
-@media screen and (max-width:650px) {
-  header {
-    grid-template-columns: 1fr 100px 100px;
-  }
+footer p {
+  margin: 0;
 }

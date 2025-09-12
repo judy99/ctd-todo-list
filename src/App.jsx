@@ -177,14 +177,7 @@ function App() {
   return (
     <div>
       <h1>My Todos</h1>
-      <TodoForm onAddTodo={addTodo} isSaving={isSaving} />
-      <TodoList
-        todoList={todoList}
-        onCompleteTodo={completeTodo}
-        onUpdateTodo={updateTodo}
-        isLoading={isLoading}
-      />
-      <footer>
+      <main>
         <TodosViewForm
           sortDirection={sortDirection}
           setSortDirection={setSortDirection}
@@ -202,7 +195,16 @@ function App() {
             </button>
           </div>
         ) : null}
-      </footer>
+
+        <TodoForm onAddTodo={addTodo} isSaving={isSaving} />
+        <TodoList
+          todoList={todoList}
+          onCompleteTodo={completeTodo}
+          onUpdateTodo={updateTodo}
+          isLoading={isLoading}
+        />
+      </main>
+      <footer><p>My Todo List, 2025</p></footer>
     </div>
   );
 }

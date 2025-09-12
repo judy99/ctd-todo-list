@@ -8,20 +8,17 @@ function TextInputWithLabel({
   placeholder,
 }) {
   return (
-    <>
-      <label htmlFor={elementId}>
-        {labelText}
-        <input
-          className={styles.textInputWithLabel}
-          type="text"
-          id={elementId}
-          onChange={onChange}
-          value={value}
-          ref={ref}
-          placeholder={placeholder}
-        />
-      </label>
-    </>
+    <div className={styles.textInputWithLabel}>
+      <label htmlFor={elementId}>{labelText}</label>
+      <input
+        type="text"
+        id={elementId}
+        onChange={onChange}
+        value={value}
+        ref={ref}
+        placeholder={placeholder}
+      />
+    </div>
   );
 }
 

@@ -23,7 +23,7 @@ const TodoForm = ({ onAddTodo, isSaving }) => {
   };
 
   return (
-    <form onSubmit={handleAddTodo}>
+    <form onSubmit={handleAddTodo} className="oneLineForm">
       <TextInputWithLabel
         elementId="todoTitle"
         onChange={handleChange}
