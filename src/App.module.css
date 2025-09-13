@@ -1,9 +1,37 @@
+header {
+  background-image: url('./assets/todo.jpg');
+  background-size: cover;
+  padding: 10px;
+}
+main {
+  flex-grow: 1;
+  padding: 2.5rem 2.5rem 0;
+}
+
+footer {
+  margin: auto;
+  width: 100%;
+  text-align: center;
+  padding: 8px;
+  background-image: url('./assets/todo.jpg');
+  background-size: cover;
+  box-sizing: border-box;
+}
+
+footer p {
+  margin: 0;
+}
+
+.currentYear {
+  padding-right: 10px;
+}
+
 .appWrapper {
   height: 100%;
   background-color: white;
   max-width: 780px;
   margin: 0 auto;
-  padding: 1rem 2.5rem 0 2.5rem;
+  /* padding: 1rem 2.5rem 0 2.5rem; */
   display: flex;
   flex-direction: column;
 }

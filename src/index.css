@@ -51,18 +51,3 @@ h6 {
 .oneLineForm > div {
   flex-grow: 1;
 }
-
-main {
-  flex-grow: 1;
-}
-
-footer {
-  margin: auto;
-  left: 0;
-  width: 100%;
-  bottom: 0;
-  height: 60px;
-}
-footer p {
-  margin: 0;
-}

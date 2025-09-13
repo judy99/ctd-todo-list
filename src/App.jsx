@@ -59,6 +59,8 @@ function App() {
     return encodeURI(`${url}?${sortQuery}${searchQuery}`);
   }, [sortField, sortDirection, queryString]);
 
+  const currentYear = new Date().getFullYear();
+
   useEffect(() => {
     const fetchTodos = async () => {
       setIsLoading(true);
@@ -177,7 +179,9 @@ function App() {
 
   return (
     <div className={styles.appWrapper}>
-      <h1 className={styles.mainTitle}>My Todos</h1>
+      <header>
+        <h1 className={styles.mainTitle}>My Todos</h1>
+      </header>
       <main>
         <TodosViewForm
           sortDirection={sortDirection}
@@ -211,7 +215,10 @@ function App() {
         />
       </main>
       <footer>
-        <p>My Todo List, 2025</p>
+        <p>
+          &copy; <span className={styles.currentYear}>{currentYear}</span>
+          My Todo List
+        </p>
       </footer>
     </div>
   );
