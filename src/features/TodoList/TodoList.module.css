@@ -4,7 +4,3 @@
   height: 500px;
   overflow-y: scroll;
 }
-
-.todoList li {
-  margin-bottom: 1rem;
-}

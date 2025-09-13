@@ -1,7 +1,8 @@
-import './App.css';
 import TodoList from './features/TodoList/TodoList';
 import TodoForm from './features/TodoForm';
 import TodosViewForm from './features/TodosViewForm';
+import styles from './App.module.css';
+
 import { useState, useEffect, useCallback } from 'react';
 
 function createPayload({ id, title, isCompleted }) {
@@ -175,8 +176,8 @@ function App() {
   };
 
   return (
-    <div>
-      <h1>My Todos</h1>
+    <div className={styles.appWrapper}>
+      <h1 className={styles.mainTitle}>My Todos</h1>
       <main>
         <TodosViewForm
           sortDirection={sortDirection}
@@ -187,12 +188,17 @@ function App() {
           setQueryString={setQueryString}
         />
         {errorMessage.length ? (
-          <div>
-            <hr />
-            <p>Error: {errorMessage}</p>
-            <button type="button" onClick={() => setErrorMessage('')}>
-              Dismiss
-            </button>
+          <div className={styles.errorWrapper}>
+            <div className={styles.error}>
+              <p>Error: {errorMessage}</p>
+              <button
+                className="formButton"
+                type="button"
+                onClick={() => setErrorMessage('')}
+              >
+                Dismiss
+              </button>
+            </div>
           </div>
         ) : null}
 
@@ -204,7 +210,9 @@ function App() {
           isLoading={isLoading}
         />
       </main>
-      <footer><p>My Todo List, 2025</p></footer>
+      <footer>
+        <p>My Todo List, 2025</p>
+      </footer>
     </div>
   );
 }

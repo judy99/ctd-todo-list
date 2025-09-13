@@ -34,9 +34,9 @@ const TodosViewForm = ({
   };
 
   return (
-    <FormViewWrapper>
+    <StyledFormViewWrapper>
       <form id="todoViewForm" onSubmit={preventRefresh}>
-        <Search>
+        <StyledSearch>
           <TextInputWithLabel
             elementId={'todoSearch'}
             onChange={(e) => setLocalQueryString(e.target.value)}
@@ -50,9 +50,9 @@ const TodosViewForm = ({
           >
             Clear
           </button>
-        </Search>
-        <SortWrapper>
-          <Sort>
+        </StyledSearch>
+        <StyledSortWrapper>
+          <StyledSort>
             <label htmlFor="sortBy">Sort by: </label>
             <select
               name="sortBy"
@@ -62,8 +62,8 @@ const TodosViewForm = ({
               <option value="title">Title</option>
               <option value="createdTime">Time added</option>
             </select>
-          </Sort>
-          <Sort>
+          </StyledSort>
+          <StyledSort>
             <label htmlFor="sortDir">Direction: </label>
             <select
               name="sortDir"
@@ -73,25 +73,25 @@ const TodosViewForm = ({
               <option value="asc">Ascending</option>
               <option value="desc">Descending</option>
             </select>
-          </Sort>
-        </SortWrapper>
+          </StyledSort>
+        </StyledSortWrapper>
       </form>
-    </FormViewWrapper>
+    </StyledFormViewWrapper>
   );
 };
 
-const FormViewWrapper = styled.form`
-  margin-bottom: 40px;
+const StyledFormViewWrapper = styled.div`
+  margin-bottom: 20px;
   border: 1px solid #ccc;
   border-radius: 10px;
   padding: 10px;
 `
 
-const SortWrapper = styled.div`
+const StyledSortWrapper = styled.div`
   display: flex;
 `;
 
-const Sort = styled.div`
+const StyledSort = styled.div`
   position: relative;
   display: flex;
   align-items: center;
@@ -113,7 +113,7 @@ const Sort = styled.div`
   }
 `;
 
-const Search = styled.div`
+const StyledSearch = styled.div`
   padding-bottom: 20px;
   display: flex;
 
