@@ -1,0 +1,53 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  width: 100vw;
+  height: 100vh;
+  margin: 0 auto;
+  background-color: #e7f6f4;
+  position: relative;
+  font-family: "WorkSans Bold", system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-size: 1em;
+}
+
+h1 {
+  margin: 0;
+  font-family: "WorkSans Bold", system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-size: 2.2em;
+  line-height: 1.1;
+}
+
+h2,
+h3,
+h4,
+h6 {
+  font-family: "WorkSans Bold", system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+.formButton {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 5px 10px;
+    font-size: 1rem;
+    margin: 0 10px;
+}
+
+.formButton:hover {
+  cursor: pointer;
+}
+.formButton:disabled:hover {
+  cursor: not-allowed;
+}
+
+.oneLineForm {
+  display: flex;
+  justify-content: space-between;
+}
+
+.oneLineForm > div {
+  flex-grow: 1;
+}

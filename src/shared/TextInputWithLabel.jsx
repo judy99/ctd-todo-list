@@ -1,17 +1,24 @@
-function TextInputWithLabel({elementId, labelText, onChange, ref, value}) {
+import styles from './textInputWithLabel.module.css'
+function TextInputWithLabel({
+  elementId,
+  labelText = '',
+  onChange,
+  ref,
+  value,
+  placeholder,
+}) {
   return (
-    <>
-      <label htmlFor={elementId}>
-        {labelText}
-        <input
-          type="text"
-          id={elementId}
-          onChange={onChange}
-          value={value}
-          ref={ref}
-        />
-      </label>
-    </>
+    <div className={styles.textInputWithLabel}>
+      <label htmlFor={elementId}>{labelText}</label>
+      <input
+        type="text"
+        id={elementId}
+        onChange={onChange}
+        value={value}
+        ref={ref}
+        placeholder={placeholder}
+      />
+    </div>
   );
 }
 

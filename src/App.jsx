@@ -1,7 +1,8 @@
-import './App.css';
 import TodoList from './features/TodoList/TodoList';
 import TodoForm from './features/TodoForm';
 import TodosViewForm from './features/TodosViewForm';
+import styles from './App.module.css';
+
 import { useState, useEffect, useCallback } from 'react';
 
 function createPayload({ id, title, isCompleted }) {
@@ -57,6 +58,8 @@ function App() {
     }
     return encodeURI(`${url}?${sortQuery}${searchQuery}`);
   }, [sortField, sortDirection, queryString]);
+
+  const currentYear = new Date().getFullYear();
 
   useEffect(() => {
     const fetchTodos = async () => {
@@ -175,33 +178,48 @@ function App() {
   };
 
   return (
-    <div>
-      <h1>My Todos</h1>
-      <TodoForm onAddTodo={addTodo} isSaving={isSaving} />
-      <TodoList
-        todoList={todoList}
-        onCompleteTodo={completeTodo}
-        onUpdateTodo={updateTodo}
-        isLoading={isLoading}
-      />
-      <hr />
-      <TodosViewForm
-        sortDirection={sortDirection}
-        setSortDirection={setSortDirection}
-        sortField={sortField}
-        setSortField={setSortField}
-        queryString={queryString}
-        setQueryString={setQueryString}
-      />
-      {errorMessage.length ? (
-        <div>
-          <hr />
-          <p>Error: {errorMessage}</p>
-          <button type="button" onClick={() => setErrorMessage('')}>
-            Dismiss
-          </button>
-        </div>
-      ) : null}
+    <div className={styles.appWrapper}>
+      <header>
+        <h1 className={styles.mainTitle}>My Todos</h1>
+      </header>
+      <main>
+        <TodosViewForm
+          sortDirection={sortDirection}
+          setSortDirection={setSortDirection}
+          sortField={sortField}
+          setSortField={setSortField}
+          queryString={queryString}
+          setQueryString={setQueryString}
+        />
+        {errorMessage.length ? (
+          <div className={styles.errorWrapper}>
+            <div className={styles.error}>
+              <p>Error: {errorMessage}</p>
+              <button
+                className="formButton"
+                type="button"
+                onClick={() => setErrorMessage('')}
+              >
+                Dismiss
+              </button>
+            </div>
+          </div>
+        ) : null}
+
+        <TodoForm onAddTodo={addTodo} isSaving={isSaving} />
+        <TodoList
+          todoList={todoList}
+          onCompleteTodo={completeTodo}
+          onUpdateTodo={updateTodo}
+          isLoading={isLoading}
+        />
+      </main>
+      <footer>
+        <p>
+          &copy; <span className={styles.currentYear}>{currentYear}</span>
+          My Todo List
+        </p>
+      </footer>
     </div>
   );
 }
