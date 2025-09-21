@@ -3,6 +3,9 @@ const initialState = {
   isLoading: false,
   errorMessage: '',
   isSaving: false,
+  sortDirection: 'desc',
+  sortField: 'createdTime',
+  queryString: '',
 };
 
 const actions = {
@@ -22,6 +25,12 @@ const actions = {
   revertTodo: 'revertTodo',
   //action on Dismiss Error button
   clearError: 'clearError',
+  // change sort direction in TodosViewForm
+  changeSortDirection: 'changSortDirection',
+  // change sort field in TodosViewForm
+  changeSortField: 'changeSortField',
+  // change query string
+  changeQueryString: 'changeQueryString',
 };
 
 function reducer(state = initialState, action) {
@@ -112,11 +121,29 @@ function reducer(state = initialState, action) {
 
     case actions.completeTodo:
       const updatedTodos = state.todoList.map((todo) =>
-        todo.id === action.id ? ({ ...todo, isCompleted: true }) : todo
+        todo.id === action.id ? { ...todo, isCompleted: true } : todo
       );
       return {
         ...state,
         todoList: [...updatedTodos],
+      };
+
+    case actions.changeSortField:
+      return {
+        ...state,
+        sortField: action.sortField,
+      };
+
+    case actions.changeSortDirection:
+      return {
+        ...state,
+        sortDirection: action.sortDirection,
+      };
+
+    case actions.changeQueryString:
+      return {
+        ...state,
+        queryString: action.queryString,
       };
   }
 }

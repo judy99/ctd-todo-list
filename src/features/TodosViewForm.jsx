@@ -1,31 +1,32 @@
 import { useEffect, useState } from 'react';
 import TextInputWithLabel from '../shared/TextInputWithLabel';
+import { actions as todoActions } from '../reducers/todos.reducer';
+
 import styled from 'styled-components';
 
-const TodosViewForm = ({
-  sortDirection,
-  setSortDirection,
-  sortField,
-  setSortField,
-  queryString,
-  setQueryString,
-}) => {
-  const [localQueryString, setLocalQueryString] = useState(queryString);
+const TodosViewForm = ({ todo, dispatch }) => {
+  const [localQueryString, setLocalQueryString] = useState(todo.queryString);
 
   const handleChangeSortField = (e) => {
-    setSortField(e.target.value);
+    dispatch({ type: todoActions.changeSortField, sortField: e.target.value });
   };
 
   const handleChangeSortDir = (e) => {
-    setSortDirection(e.target.value);
+    dispatch({
+      type: todoActions.changeSortDirection,
+      sortDirection: e.target.value,
+    });
   };
 
   useEffect(() => {
     const debounce = setTimeout(() => {
-      setQueryString(localQueryString);
+      dispatch({
+        type: todoActions.changeQueryString,
+        queryString: localQueryString,
+      });
     }, 500);
     return () => clearTimeout(debounce);
-  }, [localQueryString, setQueryString]);
+  }, [localQueryString]);
 
   // prevent the page from refreshing if a user accidentally
   // hits enter while working with this form
@@ -57,7 +58,7 @@ const TodosViewForm = ({
             <select
               name="sortBy"
               onChange={handleChangeSortField}
-              value={sortField}
+              value={todo.sortField}
             >
               <option value="title">Title</option>
               <option value="createdTime">Time added</option>
@@ -68,7 +69,7 @@ const TodosViewForm = ({
             <select
               name="sortDir"
               onChange={handleChangeSortDir}
-              value={sortDirection}
+              value={todo.sortDirection}
             >
               <option value="asc">Ascending</option>
               <option value="desc">Descending</option>
@@ -85,7 +86,7 @@ const StyledFormViewWrapper = styled.div`
   border: 1px solid #ccc;
   border-radius: 10px;
   padding: 10px;
-`
+`;
 
 const StyledSortWrapper = styled.div`
   display: flex;
@@ -117,7 +118,7 @@ const StyledSearch = styled.div`
   padding-bottom: 20px;
   display: flex;
 
-  >div {
+  > div {
     flex-grow: 1;
   }
 `;

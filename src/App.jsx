@@ -8,7 +8,7 @@ import {
 } from './reducers/todos.reducer';
 import styles from './App.module.css';
 
-import { useState, useEffect, useCallback, useReducer } from 'react';
+import { useEffect, useCallback, useReducer } from 'react';
 
 function createPayload({ id, title, isCompleted }) {
   const record = {
@@ -44,9 +44,6 @@ function getOptions(method, token, payload) {
       };
 }
 function App() {
-  const [sortDirection, setSortDirection] = useState('desc');
-  const [sortField, setSortField] = useState('createdTime');
-  const [queryString, setQueryString] = useState('');
   const [todoState, dispatch] = useReducer(todosReducer, initialTodosState);
 
   const token = `Bearer ${import.meta.env.VITE_PAT}`;
@@ -54,12 +51,12 @@ function App() {
   const encodeUrl = useCallback(() => {
     const url = `https://api.airtable.com/v0/${import.meta.env.VITE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
     let searchQuery = '';
-    let sortQuery = `sort[0][field]=${sortField}&sort[0][direction]=${sortDirection}`;
-    if (queryString) {
-      searchQuery = `&filterByFormula=SEARCH("${queryString}",+title)`;
+    let sortQuery = `sort[0][field]=${todoState.sortField}&sort[0][direction]=${todoState.sortDirection}`;
+    if (todoState.queryString) {
+      searchQuery = `&filterByFormula=SEARCH("${todoState.queryString}",+title)`;
     }
     return encodeURI(`${url}?${sortQuery}${searchQuery}`);
-  }, [sortField, sortDirection, queryString]);
+  }, [todoState.sortField, todoState.sortDirection, todoState.queryString]);
 
   const currentYear = new Date().getFullYear();
 
@@ -85,7 +82,7 @@ function App() {
       }
     };
     fetchTodos();
-  }, [sortField, sortDirection, queryString]);
+  }, [todoState.sortField, todoState.sortDirection, todoState.queryString]);
 
   const addTodo = async (newTodo) => {
     const payload = createPayload(newTodo);
@@ -117,7 +114,11 @@ function App() {
         throw new Error(resp.message);
       }
     } catch (error) {
-      dispatch({ type: todoActions.revertTodo, errorMessage: `${error.message}. Reverting todo...`, editedTodo: originalTodo });
+      dispatch({
+        type: todoActions.revertTodo,
+        errorMessage: `${error.message}. Reverting todo...`,
+        editedTodo: originalTodo,
+      });
     }
   };
 
@@ -151,14 +152,7 @@ function App() {
         <h1 className={styles.mainTitle}>My Todos</h1>
       </header>
       <main>
-        <TodosViewForm
-          sortDirection={sortDirection}
-          setSortDirection={setSortDirection}
-          sortField={sortField}
-          setSortField={setSortField}
-          queryString={queryString}
-          setQueryString={setQueryString}
-        />
+        <TodosViewForm todo={todoState} dispatch={dispatch} />
         {todoState.errorMessage.length ? (
           <div className={styles.errorWrapper}>
             <div className={styles.error}>
