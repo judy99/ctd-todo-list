@@ -5,7 +5,9 @@ import {
 } from './reducers/todos.reducer';
 import styles from './App.module.css';
 import TodosPage from './pages/TodosPage';
+import About from './pages/About';
 import Header from './shared/Header';
+import NotFound from './pages/NotFound';
 import { useEffect, useCallback, useReducer, useState } from 'react';
 import { useLocation, Route, Routes } from 'react-router';
 
@@ -178,8 +180,8 @@ function App() {
               />
             }
           />
-          <Route path="/about" element={<h1>About</h1>} />
-          <Route path="/\/*" element={<h1>Not Found</h1>} />
+          <Route path="/about" element={<About />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
       <footer>
