@@ -36,11 +36,6 @@ footer p {
   flex-direction: column;
 }
 
-.mainTitle {
-  height: 50px;
-  margin-bottom: 15px;
-  box-sizing: border-box;
-}
 
 .errorWrapper {
   position: absolute;
