@@ -9,7 +9,7 @@ import About from './pages/About';
 import Header from './shared/Header';
 import NotFound from './pages/NotFound';
 import { useEffect, useCallback, useReducer, useState } from 'react';
-import { useLocation, Route, Routes } from 'react-router';
+import { useLocation, Route, Routes, useSearchParams } from 'react-router';
 
 function createPayload({ id, title, isCompleted }) {
   const record = {
@@ -47,19 +47,32 @@ function getOptions(method, token, payload) {
 function App() {
   const [todoState, dispatch] = useReducer(todosReducer, initialTodosState);
   const [title, setTitle] = useState('Home');
+  const [offset, setOffset] = useState('');
+  // const [prevOffset, setOffset] = useState('');
+
   const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams({
+    page: '1', pageSize: '5'
+  });
 
   const token = `Bearer ${import.meta.env.VITE_PAT}`;
 
   const encodeUrl = useCallback(() => {
     const url = `https://api.airtable.com/v0/${import.meta.env.VITE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
     let searchQuery = '';
+    let pageQuery = `&page=${searchParams.get('page')}&pageSize=${searchParams.get('pageSize')}&offset=${offset}`;
+    console.log('pageQuery::::', pageQuery);
     let sortQuery = `sort[0][field]=${todoState.sortField}&sort[0][direction]=${todoState.sortDirection}`;
     if (todoState.queryString) {
       searchQuery = `&filterByFormula=SEARCH("${todoState.queryString}",+title)`;
     }
-    return encodeURI(`${url}?${sortQuery}${searchQuery}`);
-  }, [todoState.sortField, todoState.sortDirection, todoState.queryString]);
+    return encodeURI(`${url}?${sortQuery}${searchQuery}${pageQuery}`);
+  }, [
+    todoState.sortField,
+    todoState.sortDirection,
+    todoState.queryString,
+    offset,
+  ]);
 
   const currentYear = new Date().getFullYear();
 
@@ -86,7 +99,8 @@ function App() {
         if (!resp.ok) {
           throw new Error(resp.message || 'Something went wrong!');
         }
-        const { records } = await resp.json();
+        const { records, offset } = await resp.json();
+        setOffset(offset);
         dispatch({ type: todoActions.loadTodos, records });
       } catch (error) {
         dispatch({
@@ -98,7 +112,12 @@ function App() {
       }
     };
     fetchTodos();
-  }, [todoState.sortField, todoState.sortDirection, todoState.queryString]);
+  }, [
+    todoState.sortField,
+    todoState.sortDirection,
+    todoState.queryString,
+    searchParams.get('page'),
+  ]);
 
   const addTodo = async (newTodo) => {
     const payload = createPayload(newTodo);
@@ -177,6 +196,10 @@ function App() {
                 addTodo={addTodo}
                 completeTodo={completeTodo}
                 updateTodo={updateTodo}
+                searchParams={searchParams}
+                setSearchParams={setSearchParams}
+                offset={offset}
+                setOffset={setOffset}
               />
             }
           />
