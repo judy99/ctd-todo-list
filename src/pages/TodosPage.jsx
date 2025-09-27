@@ -10,6 +10,7 @@ export default function TodosPage({
   addTodo,
   completeTodo,
   updateTodo,
+  isSearch,
 }) {
   return (
     <>
@@ -34,6 +35,7 @@ export default function TodosPage({
         onCompleteTodo={completeTodo}
         onUpdateTodo={updateTodo}
         isLoading={todoState.isLoading}
+        isSearch={isSearch}
       />
     </>
   );

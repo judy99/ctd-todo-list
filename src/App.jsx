@@ -177,6 +177,7 @@ function App() {
                 addTodo={addTodo}
                 completeTodo={completeTodo}
                 updateTodo={updateTodo}
+                isSearch={todoState.queryString}
               />
             }
           />
