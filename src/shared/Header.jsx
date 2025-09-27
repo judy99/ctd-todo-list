@@ -2,6 +2,10 @@ import styles from './Header.module.css';
 import { NavLink } from 'react-router';
 
 export default function Header({ title }) {
+  const checkActive = (el) => {
+    if (el.isActive) return `${styles.navItem} ${styles.active} `;
+    return `${styles.navItem} ${styles.inactive}`;
+  };
 
   return (
     <header>
@@ -9,17 +13,13 @@ export default function Header({ title }) {
       <nav>
         <NavLink
           to={'/'}
-          className={`${styles.navItem} ${(isActive) =>
-            isActive ? styles.active : styles.inactive}
-          `}
+          className={(el) => checkActive(el)}
         >
           Home
         </NavLink>
         <NavLink
           to={'/about'}
-          className={`${styles.navItem} ${(isActive) =>
-            isActive ? styles.active : styles.inactive}
-          `}
+          className={(el) => checkActive(el)}
         >
           About
         </NavLink>
