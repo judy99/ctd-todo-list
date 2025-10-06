@@ -13,8 +13,8 @@ function TodoList({
 }) {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
-  const itemsPerPage = 5;
-  let currentPage = parseInt(searchParams.get('page') || 1, 10);
+  const itemsPerPage = 15;
+  let currentPage = parseInt(searchParams.get('page') || '1', 10);
   const indexOfFirstTodo = (currentPage - 1) * itemsPerPage;
   const filteredTodoList = todoList.filter((todo) => !todo.isCompleted);
   // uncompleted items on a page
