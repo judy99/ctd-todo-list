@@ -1,14 +1,15 @@
-import TodoList from './features/TodoList/TodoList';
-import TodoForm from './features/TodoForm';
-import TodosViewForm from './features/TodosViewForm';
 import {
   reducer as todosReducer,
   actions as todoActions,
   initialState as initialTodosState,
 } from './reducers/todos.reducer';
 import styles from './App.module.css';
-
-import { useEffect, useCallback, useReducer } from 'react';
+import TodosPage from './pages/TodosPage';
+import About from './pages/About';
+import Header from './shared/Header';
+import NotFound from './pages/NotFound';
+import { useEffect, useCallback, useReducer, useState } from 'react';
+import { useLocation, Route, Routes } from 'react-router';
 
 function createPayload({ id, title, isCompleted }) {
   const record = {
@@ -45,6 +46,8 @@ function getOptions(method, token, payload) {
 }
 function App() {
   const [todoState, dispatch] = useReducer(todosReducer, initialTodosState);
+  const [title, setTitle] = useState('Home');
+  const location = useLocation();
 
   const token = `Bearer ${import.meta.env.VITE_PAT}`;
 
@@ -59,6 +62,19 @@ function App() {
   }, [todoState.sortField, todoState.sortDirection, todoState.queryString]);
 
   const currentYear = new Date().getFullYear();
+
+  useEffect(() => {
+    switch (location.pathname) {
+      case '/':
+        setTitle('Todo List');
+        break;
+      case '/about':
+        setTitle('About');
+        break;
+      default:
+        setTitle('Not Found');
+    }
+  }, [location]);
 
   useEffect(() => {
     const fetchTodos = async () => {
@@ -148,33 +164,26 @@ function App() {
 
   return (
     <div className={styles.appWrapper}>
-      <header>
-        <h1 className={styles.mainTitle}>My Todos</h1>
-      </header>
+      <Header title={title} />
       <main>
-        <TodosViewForm todo={todoState} dispatch={dispatch} />
-        {todoState.errorMessage.length ? (
-          <div className={styles.errorWrapper}>
-            <div className={styles.error}>
-              <p>Error: {todoState.errorMessage}</p>
-              <button
-                className="formButton"
-                type="button"
-                onClick={() => dispatch({ type: todoActions.clearError })}
-              >
-                Dismiss
-              </button>
-            </div>
-          </div>
-        ) : null}
-
-        <TodoForm onAddTodo={addTodo} isSaving={todoState.isSaving} />
-        <TodoList
-          todoList={todoState.todoList}
-          onCompleteTodo={completeTodo}
-          onUpdateTodo={updateTodo}
-          isLoading={todoState.isLoading}
-        />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <TodosPage
+                todoState={todoState}
+                dispatch={dispatch}
+                todoActions={todoActions}
+                addTodo={addTodo}
+                completeTodo={completeTodo}
+                updateTodo={updateTodo}
+                isSearch={todoState.queryString}
+              />
+            }
+          />
+          <Route path="/about" element={<About />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
       </main>
       <footer>
         <p>

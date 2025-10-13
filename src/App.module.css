@@ -1,5 +1,5 @@
 header {
-  background-image: url('./assets/todo.jpg');
+  background-image: url('./assets/todo2.jpg');
   background-size: cover;
   padding: 10px;
 }
@@ -13,7 +13,7 @@ footer {
   width: 100%;
   text-align: center;
   padding: 8px;
-  background-image: url('./assets/todo.jpg');
+  background-image: url('./assets/todo2.jpg');
   background-size: cover;
   box-sizing: border-box;
 }
@@ -31,16 +31,10 @@ footer p {
   background-color: white;
   max-width: 780px;
   margin: 0 auto;
-  /* padding: 1rem 2.5rem 0 2.5rem; */
   display: flex;
   flex-direction: column;
 }
 
-.mainTitle {
-  height: 50px;
-  margin-bottom: 15px;
-  box-sizing: border-box;
-}
 
 .errorWrapper {
   position: absolute;
